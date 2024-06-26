@@ -1,6 +1,7 @@
 use std::any::Any;
 
 use slab::Slab;
+use thiserror::Error;
 
 use super::Resource;
 
@@ -50,17 +51,21 @@ impl ResourceTable {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Error, Debug, Clone, Copy, PartialEq, Eq)]
 /// Errors returned by operations on `ResourceTable`
 pub enum ResourceTableError {
     /// ResourceTable has no free keys
+    #[error("ResourceTable has no free keys")]
     Full,
     /// Resource not present in table
+    #[error("Resource not present in table")]
     NotPresent,
     /// Resource present in table, but with a different type
+    #[error("Resource present in table, but with a different type")]
     WrongType,
     /// Resource cannot be deleted because child resources exist in the table. Consult wit docs for
     /// the particular resource to see which methods may return child resources.
+    #[error("Resource cannot be deleted because child resources exist in the table")]
     HasChildren,
 }
 
